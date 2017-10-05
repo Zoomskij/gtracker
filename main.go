@@ -11,7 +11,7 @@ import (
 func main() {
 	var start time.Time
 	var stop time.Time
-	bot, err := tgbotapi.NewBotAPI("TOKEN")
+	bot, err := tgbotapi.NewBotAPI("Token")
 	if err != nil {
 		log.Panic(err)
 	}
@@ -36,8 +36,8 @@ func main() {
 
 			if Text == "/stop" {
 				stop = time.Now()
-				travelTime := (start.Hour()*60 + start.Minute()) - (stop.Hour()*60 + stop.Minute())
-				result := "Finished at " + strconv.Itoa(start.Hour()) + ":" + strconv.Itoa(start.Minute()) + "\n" + "Travel time " + strconv.Itoa(travelTime)
+				travelTime := (stop.Hour()*60 + stop.Minute()) - (start.Hour()*60 + start.Minute())
+				result := "Finished at " + strconv.Itoa(stop.Hour()) + ":" + strconv.Itoa(stop.Minute()) + "\n" + "Travel time: " + strconv.Itoa(travelTime)
 				msg := tgbotapi.NewMessage(ChatID, result)
 				bot.Send(msg)
 			}
