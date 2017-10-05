@@ -2,12 +2,15 @@ package main
 
 import (
 	"log"
+	"strconv"
+	"time"
 
 	"github.com/Syfaro/telegram-bot-api"
 )
 
 func main() {
-
+	var start time.Time
+	var stop time.Time
 	bot, err := tgbotapi.NewBotAPI("TOKEN")
 	if err != nil {
 		log.Panic(err)
@@ -26,7 +29,23 @@ func main() {
 			Text := update.Message.Text
 
 			if Text == "/go" {
-				msg := tgbotapi.NewMessage(ChatID, "go")
+				start = time.Now()
+				msg := tgbotapi.NewMessage(ChatID, "Started at "+strconv.Itoa(start.Hour())+":"+strconv.Itoa(start.Minute()))
+				bot.Send(msg)
+			}
+
+			if Text == "/stop" {
+				stop = time.Now()
+				travelTime := (start.Hour()*60 + start.Minute()) - (stop.Hour()*60 + stop.Minute())
+				result := "Finished at " + strconv.Itoa(start.Hour()) + ":" + strconv.Itoa(start.Minute()) + "\n" + "Travel time " + strconv.Itoa(travelTime)
+				msg := tgbotapi.NewMessage(ChatID, result)
+				bot.Send(msg)
+			}
+
+			if Text == "/clear" {
+				start = time.Now()
+				stop = time.Now()
+				msg := tgbotapi.NewMessage(ChatID, "Cleared")
 				bot.Send(msg)
 			}
 
